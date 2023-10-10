@@ -34,4 +34,22 @@ module.exports = {
       res.status(400).send(error);
     }
   },
+  getAllForums: async (req, res) => {
+    try {
+      let info = await Forum.findAll({
+        include: [
+          {
+            model: User,
+            attributes: ['username']
+          },
+          {
+            model: Comment
+          }
+        ]
+      })
+      res.status(200).send(info)
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  }
 };

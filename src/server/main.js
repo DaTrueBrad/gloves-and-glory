@@ -5,7 +5,7 @@ const app = express();
 const User = require("./models/User");
 const Comment = require("./models/Comment");
 const Forum = require("./models/Forum");
-const { newForum, getForum } = require("./controllers/forumCtrl");
+const { newForum, getForum, getAllForums } = require("./controllers/forumCtrl");
 
 app.use(express.json());
 
@@ -21,6 +21,7 @@ Comment.belongsTo(User);
 //! endpoints
 app.post('/api/newForum', newForum)
 app.get('/api/getforum/:id', getForum)
+app.get('/api/getForums', getAllForums)
 
 // db.sync()
 ViteExpress.listen(app, 3000, () => {

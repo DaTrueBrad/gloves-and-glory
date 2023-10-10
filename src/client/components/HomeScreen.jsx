@@ -1,10 +1,13 @@
-import React, {useRef} from 'react'
+import React, {useRef, useEffect, useState} from 'react'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import ForumCard from './ForumCard'
 
 const HomeScreen = () => {
+  const [forums, setForums] = useState([])
+  const [search, setSearch] = useState('')
   const MySwal = withReactContent(Swal)
   const navigate = useNavigate()
   const titleRef = useRef()
@@ -42,12 +45,42 @@ const HomeScreen = () => {
       }
     })
   }
+  const getData = () => {
+    axios.get('/api/getForums')
+    .then((res) => {
+      setForums(res.data)
+      console.log(res)
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+  }
+
+  useEffect(() => {
+    getData()
+  },[])
+
+  let displayForums = forums
+  .filter((forum) => {
+    if(forum.title.toLowerCase().includes(search.toLowerCase())){
+      return forum
+    } else if(forum.prompt.toLowerCase().includes(search.toLowerCase())){
+      return forum
+    }
+  })
+  .map((forum) => {
+    return <ForumCard forum={forum} />
+  })
+
   return (
     <div>
       <h1>Welcome</h1>
-      <div>
-        <input placeholder='search'/>
+      <div className='search-bar'>
+        <input placeholder='search' onChange={(e) => setSearch(e.target.value)}/>
         <h2 onClick={createForum}>+</h2>
+      </div>
+      <div className='forum-card-container'>
+        {displayForums}
       </div>
     </div>
   )
