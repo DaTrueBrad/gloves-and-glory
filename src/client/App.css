@@ -1,0 +1,19 @@
+header {
+  background-color: #8AFFC1;
+  width: 100vw;
+  height: 55px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header img {
+  height: 100%;
+  mix-blend-mode:multiply;
+}
+
+nav {
+  display: flex;
+  gap: 8px;
+}
