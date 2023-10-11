@@ -40,16 +40,28 @@ module.exports = {
         include: [
           {
             model: User,
-            attributes: ['username']
+            attributes: ["username"],
           },
           {
-            model: Comment
-          }
-        ]
-      })
-      res.status(200).send(info)
+            model: Comment,
+          },
+        ],
+      });
+      res.status(200).send(info);
     } catch (error) {
-      res.status(400).send(error)
+      res.status(400).send(error);
     }
-  }
+  },
+  addComment: async (req, res) => {
+    try {
+      let info = await Comment.create(req.body);
+      let newComment = await Comment.findOne({
+        where: { id: info.id },
+        include: [{ model: User, attributes: ["username"] }],
+      });
+      res.status(200).send(newComment);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  },
 };

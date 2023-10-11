@@ -5,7 +5,8 @@ const app = express();
 const User = require("./models/User");
 const Comment = require("./models/Comment");
 const Forum = require("./models/Forum");
-const { newForum, getForum, getAllForums } = require("./controllers/forumCtrl");
+const { newForum, getForum, getAllForums, addComment } = require("./controllers/forumCtrl");
+const { register, login } = require("./controllers/authCtrl");
 
 app.use(express.json());
 
@@ -22,6 +23,11 @@ Comment.belongsTo(User);
 app.post('/api/newForum', newForum)
 app.get('/api/getforum/:id', getForum)
 app.get('/api/getForums', getAllForums)
+
+app.post('/api/newComment', addComment)
+
+app.post('/api/register', register)
+app.post('/api/login', login)
 
 // db.sync()
 ViteExpress.listen(app, 3000, () => {

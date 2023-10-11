@@ -1,8 +1,11 @@
 import React from 'react'
 
-const CommentCard = () => {
+const CommentCard = ({comment}) => {
   return (
-    <div>CommentCard</div>
+    <div className='comment-card'>
+      <small>@{comment.user.username}</small>
+      <p>{comment.comment}</p>
+    </div>
   )
 }
 
