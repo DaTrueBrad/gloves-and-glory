@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import CommentCard from './CommentCard'
+import AuthContext from "../state/AuthContext";
 
 const ForumScreen = () => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [reply, setReply] = useState("");
   const { forumId } = useParams();
+  const {state} = useContext(AuthContext)
 
   const getData = () => {
     axios
@@ -31,7 +33,7 @@ const ForumScreen = () => {
     const newReply = {
       forumId: forumId,
       comment: reply,
-      userId: 1,
+      userId: state.id,
     };
     axios
       .post("/api/newComment", newReply)

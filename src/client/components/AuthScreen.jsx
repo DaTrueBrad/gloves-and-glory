@@ -1,9 +1,12 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import axios from "axios";
+import AuthContext from "../state/AuthContext";
+
 
 const AuthScreen = () => {
   const usernameRef = useRef();
   const passRef = useRef();
+  const {dispatch} = useContext(AuthContext)
 
   let register = () => {
     let newUser = {
@@ -12,6 +15,7 @@ const AuthScreen = () => {
     }
     axios.post('/api/register', newUser)
     .then((res) => {
+      dispatch({type: 'LOGIN', payload: res.data})
       console.log(res)
     })
     .catch((err) => {

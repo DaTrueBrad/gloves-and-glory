@@ -1,5 +1,12 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const { SECRET } = process.env;
+
+const createToken = (username, id) => {
+  return jwt.sign({ username, id }, SECRET, {});
+};
 
 module.exports = {
   register: async (req, res) => {
@@ -17,7 +24,13 @@ module.exports = {
           username: req.body.username,
           password: passHash,
         });
-        res.status(200).send(newUser);
+        let token = createToken(newUser.username, newUser.id);
+        let secureUser = {
+          username: newUser.username,
+          id: newUser.id,
+          token: token,
+        };
+        res.status(200).send(secureUser);
       }
     } catch (error) {
       res.status(200).send(error);
@@ -31,7 +44,7 @@ module.exports = {
       let checkUser = await User.findOne({
         where: { username: req.body.username },
       });
-      console.log(checkUser)
+      console.log(checkUser);
       if (!checkUser) {
         return res
           .status(401)
@@ -42,7 +55,13 @@ module.exports = {
         checkUser.password
       );
       if (comparePass) {
-        return res.status(200).send(checkUser);
+        let token = createToken(checkUser.username, checkUser.id);
+        let secureUser = {
+          username: checkUser.username,
+          id: checkUser.id,
+          token: token,
+        };
+        return res.status(200).send(secureUser);
       } else {
         return res.status(401).send("Password is incorrect.");
       }

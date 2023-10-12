@@ -1,13 +1,15 @@
-import React, {useRef, useEffect, useState} from 'react'
+import React, {useRef, useEffect, useState, useContext} from 'react'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import ForumCard from './ForumCard'
+import AuthContext from '../state/AuthContext'
 
 const HomeScreen = () => {
   const [forums, setForums] = useState([])
   const [search, setSearch] = useState('')
+  const {state} = useContext(AuthContext)
   const MySwal = withReactContent(Swal)
   const navigate = useNavigate()
   const titleRef = useRef()
@@ -30,7 +32,7 @@ const HomeScreen = () => {
         let newForum = {
           title: titleRef.current.value,
           prompt: promptRef.current.value,
-          userId: 1
+          userId: state.id
         }
         axios
           .post('/api/newForum', newForum)
